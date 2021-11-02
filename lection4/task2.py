@@ -36,6 +36,7 @@ list_color_stone = [a, b, g, d, a, g,
                     g, d, a, g, e, b,
                     b, g, d, a, c, d]
 
+
 # draw picture with pygame.draw
 
 
@@ -98,19 +99,8 @@ def draw_animal():
     draw_horn_of_animal()
 
 
-def hear_cordinate_list():
-    x_list = [400, 390, 380, 360, 350, 350, 315, 320, 330, 310, 325, 325]
-    y_list = [390, 400, 405, 430, 460, 450, 460, 460, 450, 460, 450, 440]
-    width_list = [30, 35, 35, 45, 40, 45, 30, 35, 45, 30, 40, 65]
-    height_list = [20, 25, 35, 30, 25, 20, 20, 25, 35, 20, 25, 20]
-    list_all_coord = []
-    for i in range(12):
-        list_all_coord.append([x_list[i], y_list[i], width_list[i], height_list[i]])
-    return list_all_coord
-
-
-def draw_hear_animals():
-    def hear_cord_list():
+def draw_hair_animals():
+    def hair_cord_list():
         x_list = [400, 390, 380, 360, 360, 350, 315, 320, 330, 310, 325, 325]
         y_list = [390, 400, 405, 430, 415, 450, 465, 460, 450, 460, 450, 440]
         width_list = [30, 35, 35, 45, 40, 45, 30, 35, 45, 30, 40, 65]
@@ -122,8 +112,8 @@ def draw_hear_animals():
 
     # then draw_hears_animals
 
-    for color_hear, hear_coordinate in zip(list_color_hear_animal, hear_cord_list()):
-        ellipse(sc, color_hear, hear_coordinate)
+    for color_hair, hair_coordinate in zip(list_color_hear_animal, hair_cord_list()):
+        ellipse(sc, color_hair, hair_coordinate)
 
 
 def draw_stone_near_animal():
@@ -156,7 +146,7 @@ def function_for_draw_all_picture():
     draw_tree()
     draw_stone_near_animal()
     draw_animal()
-    draw_hear_animals()
+    draw_hair_animals()
 
 
 function_for_draw_all_picture()
