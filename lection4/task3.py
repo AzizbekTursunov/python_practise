@@ -16,7 +16,67 @@ def draw_hare(x, y, width, height):
     :param height: height picture hare
     :return: none
     """
-    pass
+
+    def draw_body(hare_cord_x, hare_cord_y, width_hare, height_hare):
+        """
+        Рисует тело зайца.
+        surface - объект pygame.Surface
+        x, y - координаты центра изображения
+        width, height - ширина и высота изобажения
+        color - цвет, заданный в формате, подходящем для pygame.Color
+        """
+        ellipse(sc, (159, 146, 137),
+                (hare_cord_x - width_hare // 2, hare_cord_y - height_hare // 2, width_hare, height_hare))
+
+    def draw_head(cord_axis_x, cord_axis_y, size):
+        """
+        Рисует голову зайца.
+        surface - объект pygame.Surface
+        x, y - координаты центра изображения
+        size - диаметр головы
+        color - цвет, заданный в формате, подходящем для pygame.Color
+        """
+        circle(sc, (159, 146, 137), (cord_axis_x, cord_axis_y), size // 2)
+
+    def draw_ear(cord_axis_x, cord_axis_y, width_hare, height_hare):
+        """
+        Рисует ухо зайца.
+        surface - объект pygame.Surface
+        x, y - координаты центра изображения
+        width, height - ширина и высота изобажения
+        color - цвет, заданный в формате, подходящем для pygame.Color
+        """
+        ellipse(sc, (159, 146, 137), (cord_axis_x - width_hare // 2,
+                                      cord_axis_y - height_hare // 2, width_hare, height_hare))
+
+    def draw_leg(cord_axis_x, cord_axis_y, width_hare, height_hare):
+        """
+        Рисует ногу зайца.
+        surface - объект pygame.Surface
+        x, y - координаты центра изображения
+        width, height - ширина и высота изобажения
+        color - цвет, заданный в формате, подходящем для pygame.Color
+        """
+        ellipse(sc, (159, 146, 137), (cord_axis_x - width_hare // 2,
+                                      cord_axis_y - height_hare // 2, width_hare, height_hare))
+
+    body_width = width // 2
+    body_height = height // 2
+    body_y = y + body_height // 2
+    draw_body(x, body_y, body_width, body_height)
+
+    head_size = height // 4
+    draw_head(x, y - head_size // 2, head_size)
+
+    ear_height = height // 3
+    ear_y = y - height // 2 + ear_height // 2
+    for ear_x in (x - head_size // 4, x + head_size // 4):
+        draw_ear(ear_x, ear_y, width // 8, ear_height)
+
+    leg_height = height // 16
+    leg_y = y + height // 2 - leg_height // 2
+    for leg_x in (x - width // 4, x + width // 4):
+        draw_leg(leg_x, leg_y, width // 4, leg_height)
 
 
 def draw_environment():
@@ -122,8 +182,8 @@ def draw_environment():
     draw_tree()
 
 
-draw_hare(500, 300, 300, 500)
 draw_environment()
+draw_hare(700, 350, 200, 400)
 # end draw picture
 pygame.display.update()
 clock = pygame.time.Clock()
