@@ -32,7 +32,10 @@ def new_ball():
     x, y = [random.randint(50, 950), random.randint(50, 650)]
     cordinate_ball = [x, y]
     radius_ball = random.randint(20, 100)
-    ball = circle(sc, color,  cordinate_ball, radius_ball)
+    def move_ball():
+        circle(sc, color, [cordinate_ball[0], cordinate_ball[1]], radius_ball)
+        pass
+    move_ball()
 
 
 def click(event):
