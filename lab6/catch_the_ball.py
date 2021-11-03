@@ -26,28 +26,18 @@ wrong_clicks = 0
 
 
 def new_ball():
-    global x, y, radius_ball, Number_all_balls, cordinate_ball
+    global x, y, radius_ball, Number_all_balls
     Number_all_balls += 1
     color = random.choice([RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN])
     x, y = [random.randint(50, 950), random.randint(50, 650)]
     cordinate_ball = [x, y]
     radius_ball = random.randint(20, 100)
-    for i in range(100):
-        ball = circle(sc, color,  cordinate_ball, radius_ball)
-        cordinate_ball[0] += 5
-        cordinate_ball[1] += 0
-        pygame.display.update()
-        time.sleep(0.05)
-        sc.fill('lightgray')
-
-def move_ball():
-    pass
+    ball = circle(sc, color,  cordinate_ball, radius_ball)
 
 
 def click(event):
-    global Your_score, wrong_clicks, cordinate_ball
-    distance = ((cordinate_ball[0] - event.pos[0]) ** 2 + (cordinate_ball[1] - event.pos[1]) ** 2) ** 0.5  # distance between mouse and ball center
-    print(cordinate_ball)
+    global Your_score, wrong_clicks
+    distance = ((x - event.pos[0]) ** 2 + (y - event.pos[1]) ** 2) ** 0.5  # distance between mouse and ball center
     if distance <= radius_ball:
         Your_score += 1
     else:
