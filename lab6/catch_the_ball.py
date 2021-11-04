@@ -1,11 +1,10 @@
 import pygame
 from pygame.draw import *
 import random
-import time
 
 pygame.init()
 
-FPS = 1
+FPS = 30
 sc = pygame.display.set_mode((1000, 700))
 sc.fill('lightgrey')
 
@@ -32,20 +31,33 @@ def new_ball():
     x, y = [random.randint(50, 950), random.randint(50, 650)]
     cordinate_ball = [x, y]
     radius_ball = random.randint(20, 100)
-    def move_ball():
-        circle(sc, color, [cordinate_ball[0], cordinate_ball[1]], radius_ball)
-        pass
-    move_ball()
+    speed_ball_axis_x = random.randint(-5, 5)
+    if speed_ball_axis_x == 0:
+        speed_ball_axis_x = 2
+    speed_ball_axis_y = random.randint(-5, 5)
+    if speed_ball_axis_y == 0:
+        speed_ball_axis_y = 2
+    circle(sc, color, [x, y], radius_ball)
+    return [color, [x, y], radius_ball, speed_ball_axis_x, speed_ball_axis_y]
 
 
-def click(event):
+def move_ball(list_parametr_of_new_ball, n):
+    circle(sc, list_parametr_of_new_ball[0], list_parametr_of_new_ball[1], list_parametr_of_new_ball[2])
+    speed = [list_parametr_of_new_ball[3], list_parametr_of_new_ball[4]]
+    if list_parametr_of_new_ball[1][0] >= 1000 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][0] <= list_parametr_of_new_ball[2]:
+        list_parametr_of_new_ball[3] = -list_parametr_of_new_ball[3]
+    list_parametr_of_new_ball[1][0] += list_parametr_of_new_ball[3]
+
+
+
+def click(event, list_parametr_of_new_ball):
     global Your_score, wrong_clicks
-    distance = ((x - event.pos[0]) ** 2 + (y - event.pos[1]) ** 2) ** 0.5  # distance between mouse and ball center
-    if distance <= radius_ball:
+    distance = ((list_parametr_of_new_ball[1][0] - event.pos[0]) ** 2 + (list_parametr_of_new_ball[1][1] - event.pos[1]) ** 2) ** 0.5  # distance between mouse and ball center
+    if distance <= list_parametr_of_new_ball[2]:
         Your_score += 1
     else:
         wrong_clicks += 1
-    print('Your_score : ',  Your_score,
+    print('Your_score : ', Your_score,
           'Number wrong clicks : ', wrong_clicks)
 
 
@@ -54,18 +66,23 @@ def click(event):
 pygame.display.update()
 clock = pygame.time.Clock()
 finished = False
-
+n = 0
 while not finished:
     clock.tick(FPS)
+    if n % 300 == 0:
+        list_parametr_of_new_ball = new_ball()
+    else:
+        move_ball(list_parametr_of_new_ball, n)
+    n += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            click(event)
+            click(event, list_parametr_of_new_ball)
 
-    new_ball()
+
     pygame.display.update()
     sc.fill('lightgrey')
 
-print('Number_all_balls : ', Number_all_balls, 'Total score : ', Your_score )
+print('Number_all_balls : ', Number_all_balls, 'Total score : ', Your_score)
 pygame.quit()
