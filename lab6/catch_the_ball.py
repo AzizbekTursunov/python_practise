@@ -67,5 +67,5 @@ while not finished:
     pygame.display.update()
     sc.fill('lightgrey')
 
-print('Number_all_balls : ', Number_all_balls)
+print('Number_all_balls : ', Number_all_balls, 'Total score : ', Your_score )
 pygame.quit()
