@@ -46,13 +46,18 @@ def move_ball(list_parametr_of_new_ball, n):
     speed = [list_parametr_of_new_ball[3], list_parametr_of_new_ball[4]]
     if list_parametr_of_new_ball[1][0] >= 1000 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][0] <= list_parametr_of_new_ball[2]:
         list_parametr_of_new_ball[3] = -list_parametr_of_new_ball[3]
+    if list_parametr_of_new_ball[1][1] >= 700 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][1] <= list_parametr_of_new_ball[2]:
+        list_parametr_of_new_ball[4] = -list_parametr_of_new_ball[4]
     list_parametr_of_new_ball[1][0] += list_parametr_of_new_ball[3]
+    list_parametr_of_new_ball[1][1] += list_parametr_of_new_ball[4]
 
 
 
 def click(event, list_parametr_of_new_ball):
     global Your_score, wrong_clicks
-    distance = ((list_parametr_of_new_ball[1][0] - event.pos[0]) ** 2 + (list_parametr_of_new_ball[1][1] - event.pos[1]) ** 2) ** 0.5  # distance between mouse and ball center
+    ax = (list_parametr_of_new_ball[1][0] - event.pos[0]) ** 2
+    by = (list_parametr_of_new_ball[1][1] - event.pos[1]) ** 2
+    distance = (ax + by) ** 0.5  # distance between mouse and ball center
     if distance <= list_parametr_of_new_ball[2]:
         Your_score += 1
     else:
