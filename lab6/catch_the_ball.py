@@ -25,36 +25,31 @@ wrong_clicks = 0
 
 
 def new_ball():
-    global x, y, radius_ball, Number_all_balls
+    global Number_all_balls
     Number_all_balls += 1
     color = random.choice([RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN])
-    x, y = [random.randint(50, 950), random.randint(50, 650)]
-    cordinate_ball = [x, y]
-    radius_ball = random.randint(20, 100)
-    speed_ball_axis_x = random.randint(-5, 5)
-    if speed_ball_axis_x == 0:
-        speed_ball_axis_x = 2
-    speed_ball_axis_y = random.randint(-5, 5)
-    if speed_ball_axis_y == 0:
-        speed_ball_axis_y = 2
+    x, y = [random.randint(70, 920), random.randint(70, 620)]
+    radius_ball = random.randint(30, 50)
+    speed_ball_axis_x = random.choice([-4, -3, -2, -1.5, 1.5, 2, 3, 4])
+    speed_ball_axis_y = random.choice([-4, -3, -2, -1, 1, 2, 3, 4])
     circle(sc, color, [x, y], radius_ball)
     return [color, [x, y], radius_ball, speed_ball_axis_x, speed_ball_axis_y]
 
 
-def move_ball(list_parametr_of_new_ball, n):
+def move_ball(list_parametr_of_new_ball):
     circle(sc, list_parametr_of_new_ball[0], list_parametr_of_new_ball[1], list_parametr_of_new_ball[2])
-    speed = [list_parametr_of_new_ball[3], list_parametr_of_new_ball[4]]
-    if list_parametr_of_new_ball[1][0] >= 1000 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][0] <= list_parametr_of_new_ball[2]:
+    if list_parametr_of_new_ball[1][0] >= 1000 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][0] <= \
+            list_parametr_of_new_ball[2]:
         list_parametr_of_new_ball[3] = -list_parametr_of_new_ball[3]
-    if list_parametr_of_new_ball[1][1] >= 700 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][1] <= list_parametr_of_new_ball[2]:
+    if list_parametr_of_new_ball[1][1] >= 700 - list_parametr_of_new_ball[2] or list_parametr_of_new_ball[1][1] <= \
+            list_parametr_of_new_ball[2]:
         list_parametr_of_new_ball[4] = -list_parametr_of_new_ball[4]
     list_parametr_of_new_ball[1][0] += list_parametr_of_new_ball[3]
     list_parametr_of_new_ball[1][1] += list_parametr_of_new_ball[4]
 
 
-
 def click(event, list_parametr_of_new_ball):
-    global Your_score, wrong_clicks
+    global Your_score, wrong_clicks, hit_the_target
     ax = (list_parametr_of_new_ball[1][0] - event.pos[0]) ** 2
     by = (list_parametr_of_new_ball[1][1] - event.pos[1]) ** 2
     distance = (ax + by) ** 0.5  # distance between mouse and ball center
@@ -72,20 +67,19 @@ pygame.display.update()
 clock = pygame.time.Clock()
 finished = False
 n = 0
+
 while not finished:
-    clock.tick(FPS)
-    if n % 300 == 0:
-        list_parametr_of_new_ball = new_ball()
-    else:
-        move_ball(list_parametr_of_new_ball, n)
-    n += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             click(event, list_parametr_of_new_ball)
-
-
+    clock.tick(FPS)
+    if n % 50 == 0:
+        list_parametr_of_new_ball = new_ball()
+    else:
+        move_ball(list_parametr_of_new_ball)
+    n += 1
     pygame.display.update()
     sc.fill('lightgrey')
 
