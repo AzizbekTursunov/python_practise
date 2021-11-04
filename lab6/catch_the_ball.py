@@ -67,7 +67,7 @@ pygame.display.update()
 clock = pygame.time.Clock()
 finished = False
 n = 0
-
+# main loop
 while not finished:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
