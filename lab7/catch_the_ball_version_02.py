@@ -131,7 +131,6 @@ def click_target_2(event, list_parametr_of_new_square):
             (list_parametr_of_new_square[1][0] + list_parametr_of_new_square[1][2]) >= event.pos[0]) and (
             list_parametr_of_new_square[1][1] <= event.pos[1]) and (
             (list_parametr_of_new_square[1][1] + list_parametr_of_new_square[1][2]) >= event.pos[1]):
-        print('You hit the square')
         Your_score += 100
         hit_the_target2 = True
         You_hit_square += 1
