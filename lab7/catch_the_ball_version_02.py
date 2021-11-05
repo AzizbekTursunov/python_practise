@@ -22,6 +22,8 @@ COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 Your_score = 0
 Number_all_balls = 0
 Number_all_Squares = 0
+You_hit_square = 0
+You_hit_ball = 0
 
 
 def new_ball():
@@ -110,7 +112,7 @@ def click(event, list_parametr_of_new_ball):
     :return: the varrable 'hit_the_target'. If we hit any ball, then ball to be hidden.
     This varriable must to do that.
     """
-    global Your_score
+    global Your_score, You_hit_ball
     ax = (list_parametr_of_new_ball[1][0] - event.pos[0]) ** 2
     by = (list_parametr_of_new_ball[1][1] - event.pos[1]) ** 2
     distance = (ax + by) ** 0.5  # distance between mouse and ball center
@@ -118,19 +120,22 @@ def click(event, list_parametr_of_new_ball):
     if distance <= list_parametr_of_new_ball[2]:
         Your_score += 1
         hit_the_target = True
+        You_hit_ball += 1
     return hit_the_target
 
 
-def click_target_2(event):
-    global Your_score
+def click_target_2(event, list_parametr_of_new_square):
+    global Your_score, You_hit_square
+    hit_the_target2 = False
     if (list_parametr_of_new_square[1][0] <= event.pos[0]) and (
             (list_parametr_of_new_square[1][0] + list_parametr_of_new_square[1][2]) >= event.pos[0]) and (
             list_parametr_of_new_square[1][1] <= event.pos[1]) and (
             (list_parametr_of_new_square[1][1] + list_parametr_of_new_square[1][2]) >= event.pos[1]):
         print('You hit the square')
-        Your_score += 1
-    else:
-        print('try again')
+        Your_score += 100
+        hit_the_target2 = True
+        You_hit_square += 1
+    return hit_the_target2
 
 
 # end body programm
@@ -142,7 +147,7 @@ n = 0
 # main loop. All functions are called here.
 hit_the_target_list = [False, False, False, False]  # If we hit any ball, then ball to be hidden.
 # This varriable must to do that.
-hit_the_target2 = [False]  # If we hit any square, then ball to be hidden.
+hit_the_target2 = [False, False]  # If we hit any square, then ball to be hidden.
 # This varriable must to do that.
 while not finished:
     clock.tick(FPS)
@@ -154,13 +159,15 @@ while not finished:
             hit_the_target_list[1] = click(event, list_parametr_of_new_ball_2)
             hit_the_target_list[2] = click(event, list_parametr_of_new_ball_3)
             hit_the_target_list[3] = click(event, list_parametr_of_new_ball_4)
-            click_target_2(event)
+            hit_the_target2[0] = click_target_2(event, list_parametr_of_new_square1)
+            hit_the_target2[1] = click_target_2(event, list_parametr_of_new_square2)
     if n % 50 == 0:
         list_parametr_of_new_ball_1 = new_ball()
         list_parametr_of_new_ball_2 = new_ball()
         list_parametr_of_new_ball_3 = new_ball()
         list_parametr_of_new_ball_4 = new_ball()
-        list_parametr_of_new_square = new_square()
+        list_parametr_of_new_square1 = new_square()
+        list_parametr_of_new_square2 = new_square()
     if not hit_the_target_list[0]:
         move_ball(list_parametr_of_new_ball_1)
     if not hit_the_target_list[1]:
@@ -170,9 +177,13 @@ while not finished:
     if not hit_the_target_list[3]:
         move_ball(list_parametr_of_new_ball_4)
     if not hit_the_target2[0]:
-        move_square(list_parametr_of_new_square)
+        move_square(list_parametr_of_new_square1)
+    if not hit_the_target2[1]:
+        move_square(list_parametr_of_new_square2)
+
     n += 1
     pygame.display.update()
     sc.fill('lightgray')
-print('Number_all_balls :', Number_all_balls, 'Number_all_Squares :', Number_all_Squares, 'Total score :', Your_score)
+print('Number_all_balls :', Number_all_balls, 'You_hit_balls :', You_hit_ball, 'Number_all_Squares :',
+      Number_all_Squares, 'You_hit_square :', You_hit_square, 'Total score :', Your_score)
 pygame.quit()
