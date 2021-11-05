@@ -21,6 +21,7 @@ COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 Your_score = 0
 Number_all_balls = 0
+Number_all_squares = 0
 wrong_clicks = 0
 
 
@@ -47,8 +48,24 @@ def new_ball():
 
 
 def new_square():
-    pass
-
+    """
+    This function must created (only parametrs) one new square
+    :return: the function must return list with elements:
+    color square
+    coordinate centre square(axis x and axis y) '[x, y]'
+    width and height square h
+    speed square on axis x
+    speed square on axis y
+    """
+    global Number_all_squares
+    Number_all_squares += 1
+    color_sqr = random.choice([RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN])
+    x, y = [random.randint(70, 920), random.randint(70, 620)]
+    h = random.randint(30, 50)
+    speed_square_axis_x = random.choice([-4, -3, -2, -1.5, 1.5, 2, 3, 4])
+    speed_square_axis_y = random.choice([-4, -3, -2, -1, 1, 2, 3, 4])
+    rect(sc, color_sqr, [x, y, h, h])
+    return [color_sqr, [x, y, h, h], speed_square_axis_x, speed_square_axis_y]
 
 def move_ball(list_parametr_of_new_ball):
     """
