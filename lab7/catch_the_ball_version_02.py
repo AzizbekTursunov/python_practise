@@ -18,11 +18,10 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
-
+# Counters
 Your_score = 0
 Number_all_balls = 0
-Number_all_squares = 0
-wrong_clicks = 0
+Number_all_Squares = 0
 
 
 def new_ball():
@@ -52,13 +51,13 @@ def new_square():
     This function must created (only parametrs) one new square
     :return: the function must return list with elements:
     color square
-    coordinate centre square(axis x and axis y) '[x, y]'
+    coordinates of the top-left corner of the square(axis x and axis y) '[x, y]'
     width and height square h
     speed square on axis x
     speed square on axis y
     """
-    global Number_all_squares
-    Number_all_squares += 1
+    global Number_all_Squares
+    Number_all_Squares += 1
     color_sqr = random.choice([RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN])
     x, y = [random.randint(70, 920), random.randint(70, 620)]
     h = random.randint(30, 50)
@@ -66,6 +65,7 @@ def new_square():
     speed_square_axis_y = random.choice([-4, -3, -2, -1, 1, 2, 3, 4])
     rect(sc, color_sqr, [x, y, h, h])
     return [color_sqr, [x, y, h, h], speed_square_axis_x, speed_square_axis_y]
+
 
 def move_ball(list_parametr_of_new_ball):
     """
@@ -84,8 +84,22 @@ def move_ball(list_parametr_of_new_ball):
     list_parametr_of_new_ball[1][1] += list_parametr_of_new_ball[4]
 
 
-def move_square():
-    pass
+def move_square(list_parametr_of_new_square):
+    """
+    In this function is written move law of the square. This function changes list 'list_parametr_of_new_square'.
+    :param list_parametr_of_new_square: function 'new_square()' returned this list, then function move_square taked
+    this list list_parametr_of_new_square = [color_sqr, [x, y, h, h], speed_square_axis_x, speed_square_axis_y]
+    :return: None
+    """
+    rect(sc, list_parametr_of_new_square[0], list_parametr_of_new_square[1])
+    if list_parametr_of_new_square[1][0] >= 1000 - list_parametr_of_new_square[1][2] or list_parametr_of_new_square[1][
+        0] <= 0:
+        list_parametr_of_new_square[2] = -list_parametr_of_new_square[2]
+    if list_parametr_of_new_square[1][1] >= 700 - list_parametr_of_new_square[1][2] or list_parametr_of_new_square[1][
+        1] <= 0:
+        list_parametr_of_new_square[3] = -list_parametr_of_new_square[3]
+    list_parametr_of_new_square[1][0] += list_parametr_of_new_square[2]
+    list_parametr_of_new_square[1][1] += list_parametr_of_new_square[3]
 
 
 def click(event, list_parametr_of_new_ball):
@@ -96,7 +110,7 @@ def click(event, list_parametr_of_new_ball):
     :return: the varrable 'hit_the_target'. If we hit any ball, then ball to be hidden.
     This varriable must to do that.
     """
-    global Your_score, wrong_clicks
+    global Your_score
     ax = (list_parametr_of_new_ball[1][0] - event.pos[0]) ** 2
     by = (list_parametr_of_new_ball[1][1] - event.pos[1]) ** 2
     distance = (ax + by) ** 0.5  # distance between mouse and ball center
@@ -108,7 +122,15 @@ def click(event, list_parametr_of_new_ball):
 
 
 def click_target_2(event):
-    pass
+    global Your_score
+    if (list_parametr_of_new_square[1][0] <= event.pos[0]) and (
+            (list_parametr_of_new_square[1][0] + list_parametr_of_new_square[1][2]) >= event.pos[0]) and (
+            list_parametr_of_new_square[1][1] <= event.pos[1]) and (
+            (list_parametr_of_new_square[1][1] + list_parametr_of_new_square[1][2]) >= event.pos[1]):
+        print('You hit the square')
+        Your_score += 1
+    else:
+        print('try again')
 
 
 # end body programm
@@ -117,8 +139,10 @@ pygame.display.update()
 clock = pygame.time.Clock()
 finished = False
 n = 0
-# main loop
+# main loop. All functions are called here.
 hit_the_target_list = [False, False, False, False]  # If we hit any ball, then ball to be hidden.
+# This varriable must to do that.
+hit_the_target2 = [False]  # If we hit any square, then ball to be hidden.
 # This varriable must to do that.
 while not finished:
     clock.tick(FPS)
@@ -136,7 +160,7 @@ while not finished:
         list_parametr_of_new_ball_2 = new_ball()
         list_parametr_of_new_ball_3 = new_ball()
         list_parametr_of_new_ball_4 = new_ball()
-        new_square()
+        list_parametr_of_new_square = new_square()
     if not hit_the_target_list[0]:
         move_ball(list_parametr_of_new_ball_1)
     if not hit_the_target_list[1]:
@@ -145,9 +169,10 @@ while not finished:
         move_ball(list_parametr_of_new_ball_3)
     if not hit_the_target_list[3]:
         move_ball(list_parametr_of_new_ball_4)
-    move_square()
+    if not hit_the_target2[0]:
+        move_square(list_parametr_of_new_square)
     n += 1
     pygame.display.update()
     sc.fill('lightgray')
-print('Number_all_balls :', Number_all_balls, 'Total score :', Your_score)
+print('Number_all_balls :', Number_all_balls, 'Number_all_Squares :', Number_all_Squares, 'Total score :', Your_score)
 pygame.quit()
